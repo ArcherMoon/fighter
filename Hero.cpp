@@ -2,6 +2,13 @@
 
 using namespace cocos2d;
 
+Hero::Hero(void)
+{
+}
+
+Hero::~Hero(void)
+{
+}
 
 bool Hero::init()
 {
@@ -11,20 +18,41 @@ bool Hero::init()
         return false;
     }
 
-     /* 创建空闲的动作 */
-     CCArray *idleFrames = CCArray::createWithCapacity(6);
-     for (int i=0; i<6; ++i)
+    /* 创建空闲的动作,两种方法 */
+    CCAnimation *idleAnimation = CCAnimation::create();
+    for (int i = 0; i<6; ++i)
     {
-        CCSpriteFrame *frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("hero_idle_%02d.png", i)->getCString());
-        idleFrames->addObject(frame);
+        char szName[128] = {0};
+        sprintf(szName, "hero_idle_%02d.png", i);
+        CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(szName);
+        idleAnimation->addSpriteFrame(frame);
     }
-     CCAnimation *idleAnimation = CCAnimation::createWithSpriteFrames(idleFrames, 1.0/12.0);
-     idleAction = CCRepeatForever::create(CCAnimate::create(idleAnimation));
+    idleAnimation->setDelayPerUnit(1.0/12.0);
+    idleAnimation->setRestoreOriginalFrame(true);
+    idleAction = CCRepeatForever::create(CCAnimate::create(idleAnimation));
+    /* 一定要加引用计数，否则会crash!! */
+    idleAction->retain();
+    
+     /* 创建攻击动作 */
+     CCArray * attackFrames = CCArray::createWithCapacity(3);
+    for (int i=0; i<3; ++i)
+    {
+        CCSpriteFrame *frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("hero_attack_00_%02d.png", i)->getCString());
+        attackFrames->addObject(frame);
+    }
+    CCAnimation *attackAnimation = CCAnimation::createWithSpriteFrames(attackFrames, 1.0/24.0);
+    attackAction = CCSequence::create(
+        CCAnimate::create(attackAnimation),
+        CCCallFunc::create(this, callfunc_selector(Hero::idle)),
+        NULL);
+    /* 一定要加引用计数，否则会crash!! */
+    attackAction->retain();
+
+    CCLOG("---create actions-----idle %d,attack %d", idleAction->retainCount(), attackAction->retainCount());
 
      this->centerToSides = 39.0;
 
     return true;
 }
-
 
 

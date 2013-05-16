@@ -11,9 +11,11 @@ public:
 
     /* actions */
     CC_SYNTHESIZE(cocos2d::CCAction *, idleAction, IdleAction);
+    CC_SYNTHESIZE(cocos2d::CCAction *, attackAction, AttackAction);   
 
     /* action methods */
-    void idle();    /* 空闲方法 */
+    void idle();        /* 空闲 */
+    void attack();
 
     /* 用于衡量sprite的实际大小 */
     CC_SYNTHESIZE( float, centerToSides, CenterToSides);
@@ -21,5 +23,5 @@ public:
 private:
 
 };
-
+    
 #endif

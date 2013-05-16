@@ -4,7 +4,14 @@
 using namespace cocos2d;
 using namespace CocosDenshion;
 
+GameLayer::GameLayer(void)
+{
+}
 
+GameLayer:: ~GameLayer(void)
+{
+}
+    
 bool GameLayer::init()
 {
     if ( !CCLayer::init() )
@@ -22,6 +29,9 @@ bool GameLayer::init()
 
     /* 初始化hero */
     this->initHero();
+
+    /* 使能触摸 */
+    this->setTouchEnabled(true);
 
     return true;
 }
@@ -57,4 +67,9 @@ void GameLayer::initHero()
     _hero->idle();
 
     return;
+}
+
+void  GameLayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent)
+{
+    _hero->attack();
 }

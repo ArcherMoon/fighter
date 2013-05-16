@@ -7,6 +7,8 @@
 class Hero : public ActionSprite
 {
 public:
+	Hero(void);
+	~Hero(void);
     virtual bool init();
 
     CREATE_FUNC(Hero);
