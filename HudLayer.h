@@ -2,6 +2,7 @@
 #define __HUDLAYER_H__
 
 #include "cocos2d.h"
+#include "SimpleDPad.h"
 
 class HudLayer : public cocos2d::CCLayer
 {
@@ -12,6 +13,8 @@ public:
     virtual bool init();  
 
     CREATE_FUNC(HudLayer);
+
+    CC_SYNTHESIZE(SimpleDPad *, _dPad , DPad);
 
 private:
 
