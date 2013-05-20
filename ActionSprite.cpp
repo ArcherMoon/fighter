@@ -34,3 +34,9 @@ void ActionSprite::attack()
 
     return;
 }
+
+void ActionSprite::walkWithDirection(CCPoint direction)
+{
+    this->stopAllActions();
+    this->runAction(walkAction);
+}

@@ -72,4 +72,17 @@ void GameLayer::initHero()
 void  GameLayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent)
 {
     _hero->attack();
+    return;
+}
+
+void  GameLayer::didChangeDirectionTo(CCPoint direction)
+{
+    /* 执行移动动作 */
+    _hero->walkWithDirection(direction);
+    return;
+}
+
+void GameLayer::simpleDPadTouchEnded()
+{
+    _hero->idle();    
 }

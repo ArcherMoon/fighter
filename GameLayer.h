@@ -3,8 +3,9 @@
 
 #include "cocos2d.h"
 #include "Hero.h"
+#include "SimpleDPad.h"
 
-class GameLayer : public cocos2d::CCLayer
+class GameLayer : public cocos2d::CCLayer, public SimpleDPadDelegate
 {
 public:
 	GameLayer(void);
@@ -18,6 +19,10 @@ public:
     void initHero();
     
     void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
+
+    /* 实现代理SimpleDPadDelegate中的方法 */
+    void didChangeDirectionTo(cocos2d::CCPoint direction);
+    void simpleDPadTouchEnded();
     
 private:
     cocos2d::CCTMXTiledMap * _tiledMap;     /* 背景地图 */

@@ -24,6 +24,9 @@ bool GameScene::init()
     this->addChild(_gameLayer, 0);
     _hudLayer = HudLayer::create();
     this->addChild(_hudLayer, 1);
+
+    /* 设置gamelayer为dpad的代理 */
+    _hudLayer->getDPad()->setDelegate(_gameLayer);
     
     return true;
 }

@@ -48,6 +48,21 @@ bool Hero::init()
     /* 一定要加引用计数，否则会crash!! */
     attackAction->retain();
 
+    /* 创建移动的动作 */
+    CCAnimation *walkAnimation = CCAnimation::create();
+    for (int i = 0; i<8; ++i)
+    {
+        char szName[128] = {0};
+        sprintf(szName, "hero_walk_%02d.png", i);
+        CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(szName);
+        walkAnimation->addSpriteFrame(frame);
+    }
+    walkAnimation->setDelayPerUnit(1.0/12.0);
+    walkAnimation->setRestoreOriginalFrame(true);
+    walkAction = CCRepeatForever::create(CCAnimate::create(walkAnimation));
+    /* 一定要加引用计数，否则会crash!! */
+    walkAction->retain();
+
     CCLOG("---create actions-----idle %d,attack %d", idleAction->retainCount(), attackAction->retainCount());
 
      this->centerToSides = 39.0;

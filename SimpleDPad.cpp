@@ -44,6 +44,8 @@ bool SimpleDPad::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
     if (distanceSQ <= _radius * _radius)
     {
         CCLOG("receive touch");
+        this->updateDirectionForTouchLocation(location);
+        _isHeld = true;
         return true;
     }
 
@@ -52,7 +54,39 @@ bool SimpleDPad::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 }
 
 void SimpleDPad::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
-{}
+{
+    CCPoint location = pTouch->getLocation();
+    this->updateDirectionForTouchLocation(location);
+
+    return;
+}
 
 void SimpleDPad::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
-{}
+{
+    _isHeld = false;
+    _delegate->simpleDPadTouchEnded();
+
+    return;
+}
+
+void SimpleDPad::updateDirectionForTouchLocation(cocos2d::CCPoint location)
+{
+    /* 把触摸点转换为方向 */
+    float radians = ccpToAngle(ccpSub(location, this->getPosition()));
+    float degrees = -1 * CC_RADIANS_TO_DEGREES(radians);
+
+    if (degrees <= 22.5 && degrees >= -22.5)
+    {
+        /* right */
+        _direction = ccp(1.0, 0.0);  
+    }
+    else
+    {
+        _direction = ccp(1.0, 1.0);  
+    }
+
+    /* 由代理处理方向 */
+    _delegate->didChangeDirectionTo(_direction);
+
+    return;
+}
