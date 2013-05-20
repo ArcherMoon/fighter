@@ -2,6 +2,7 @@
 #define __ACTION_SPRITE_H__
 
 #include "cocos2d.h"
+#include "Defines.h"
 
 class ActionSprite : public cocos2d::CCSprite
 {
@@ -21,6 +22,9 @@ public:
     void idle();        /* ¿ÕÏÐ */
     void attack();
     void walkWithDirection(cocos2d::CCPoint direction);
+
+    /* ÈËÎï×´Ì¬ */
+    CC_SYNTHESIZE(ActionState,_actionState, ActionState);
 
     /* attributes */
     CC_SYNTHESIZE(float, _walkSpeed, WalkSpeed);

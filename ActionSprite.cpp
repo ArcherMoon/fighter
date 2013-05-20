@@ -7,6 +7,7 @@ ActionSprite::ActionSprite()
 :idleAction(NULL)
 ,attackAction(NULL)
 ,walkAction(NULL)
+,_actionState(ActionStateNone)
 {
 }
 
@@ -16,33 +17,56 @@ ActionSprite::~ActionSprite()
 
 void ActionSprite::idle()
 {
-    CCLOG("---idle before stopAllActions-----idle %d,attack %d", idleAction->retainCount(), attackAction->retainCount());
-    this->stopAllActions();
-    CCLOG("---idle before runAction-----%d,%d", idleAction->retainCount(), attackAction->retainCount());
-    this->runAction(idleAction);
-    CCLOG("---idle after runAction-----%d,%d", idleAction->retainCount(), attackAction->retainCount());
-    _velocity = CCPointZero;
+    if (ActionStateIdle != _actionState)
+    {
+        this->stopAllActions();
+        this->runAction(idleAction);
+        _velocity = CCPointZero;
+        _actionState = ActionStateIdle;
+    }
 
     return;
 }
 
 void ActionSprite::attack()
 {
-    CCLOG("---attack before stopAllActions-----idle %d,attack %d", idleAction->retainCount(), attackAction->retainCount());
-    this->stopAllActions();
-    CCLOG("---attack before runAction-----%d,%d", idleAction->retainCount(), attackAction->retainCount());
-    this->runAction(attackAction);
-    CCLOG("---attack before runAction-----%d,%d", idleAction->retainCount(), attackAction->retainCount());
+    if (ActionStateIdle == _actionState ||
+        ActionStateAttack == _actionState ||
+        ActionStateWalk == _actionState)
+    {
+        this->stopAllActions();
+        this->runAction(attackAction);
+        _actionState = ActionStateAttack;
+    }
 
     return;
 }
 
 void ActionSprite::walkWithDirection(CCPoint direction)
 {
-    this->stopAllActions();
-    this->runAction(walkAction);
+    /* 没有开始移动则执行移动动画，已经移动则计算速度 */
+    if (ActionStateIdle == _actionState)
+    {
+        this->stopAllActions();
+        this->runAction(walkAction);
+        _actionState = ActionStateWalk;
+    }
 
-    _velocity = ccp(direction.x * _walkSpeed, direction.y * _walkSpeed);
+     if (ActionStateWalk == _actionState)
+    {
+        _velocity = ccp(direction.x * _walkSpeed, direction.y * _walkSpeed);
+        /* 设置角色的朝向 */
+        if (_velocity.x >= 0)
+        {
+            this->setScaleX(1.0);
+        }
+        else
+        {
+            this->setScaleX(-1.0);
+        }
+    }
+
+     return;
 }
 
 void ActionSprite::update(float delta)
