@@ -9,6 +9,8 @@ public:
     ActionSprite();
     ~ActionSprite();
 
+    virtual void update(float delta);
+    
     /* actions */
     CC_SYNTHESIZE(cocos2d::CCAction *, idleAction, IdleAction);
     CC_SYNTHESIZE(cocos2d::CCAction *, attackAction, AttackAction);   
@@ -19,6 +21,14 @@ public:
     void idle();        /* 空闲 */
     void attack();
     void walkWithDirection(cocos2d::CCPoint direction);
+
+    /* attributes */
+    CC_SYNTHESIZE(float, _walkSpeed, WalkSpeed);
+
+    /* movement */
+    CC_SYNTHESIZE(cocos2d::CCPoint, _velocity, Velocity);
+    CC_SYNTHESIZE(cocos2d::CCPoint, _desiredPosition, DesiredPosition);
+    
 
     /* 用于衡量sprite的实际大小 */
     CC_SYNTHESIZE( float, centerToSides, CenterToSides);

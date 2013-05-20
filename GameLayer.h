@@ -13,6 +13,8 @@ public:
     
     virtual bool init();  
     void initTiledMap();
+    virtual void update(float delta);
+    void updatePositions();
 
     CREATE_FUNC(GameLayer);
 

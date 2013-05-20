@@ -33,6 +33,9 @@ bool GameLayer::init()
     /* 使能触摸 */
     this->setTouchEnabled(true);
 
+    /* 定时器更新update方法 */
+    this->scheduleUpdate();
+    
     return true;
 }
 
@@ -85,4 +88,19 @@ void  GameLayer::didChangeDirectionTo(CCPoint direction)
 void GameLayer::simpleDPadTouchEnded()
 {
     _hero->idle();    
+}
+
+void GameLayer::update(float delta)
+{
+    _hero->update(delta);
+    this->updatePositions();
+
+    return;
+}
+
+void GameLayer::updatePositions()
+{
+    _hero->setPosition(_hero->getDesiredPosition());
+
+    return;
 }

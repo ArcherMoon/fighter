@@ -66,6 +66,7 @@ bool Hero::init()
     CCLOG("---create actions-----idle %d,attack %d", idleAction->retainCount(), attackAction->retainCount());
 
      this->centerToSides = 39.0;
+     this->_walkSpeed = 80.0;
 
     return true;
 }
