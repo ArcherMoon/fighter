@@ -100,7 +100,10 @@ void GameLayer::update(float delta)
 
 void GameLayer::updatePositions()
 {
-    _hero->setPosition(_hero->getDesiredPosition());
+    /* Éè¶¨ÒÆ¶¯·¶Î§ */
+    float x = MIN(MAX(_hero->getCenterToSides(), _hero->getDesiredPosition().x), _tiledMap->getMapSize().width * _tiledMap->getTileSize().width - _hero->getCenterToSides());
+    float y = MIN(MAX(_hero->getCenterToBottom(), _hero->getDesiredPosition().y), _tiledMap->getTileSize().height * 3 + _hero->getCenterToBottom());
+    _hero->setPosition(ccp(x, y));
 
     return;
 }

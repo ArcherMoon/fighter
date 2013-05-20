@@ -32,6 +32,7 @@ public:
 
     /* 用于衡量sprite的实际大小 */
     CC_SYNTHESIZE( float, centerToSides, CenterToSides);
+    CC_SYNTHESIZE( float, centerToBottom, CenterToBottom);
 
 private:
 
