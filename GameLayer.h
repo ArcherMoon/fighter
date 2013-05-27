@@ -15,11 +15,13 @@ public:
     void initTiledMap();
     virtual void update(float delta);
     void updatePositions();
+    /* 使hero始终位于屏幕中心 */
+    void setViewpointCenter(cocos2d::CCPoint position);  
 
     CREATE_FUNC(GameLayer);
-
-    void initHero();
     
+    void initHero();
+        
     void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
 
     /* 实现代理SimpleDPadDelegate中的方法 */

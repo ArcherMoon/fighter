@@ -94,6 +94,7 @@ void GameLayer::update(float delta)
 {
     _hero->update(delta);
     this->updatePositions();
+    this->setViewpointCenter(_hero->getPosition());
 
     return;
 }
@@ -106,4 +107,21 @@ void GameLayer::updatePositions()
     _hero->setPosition(ccp(x, y));
 
     return;
+}
+
+void GameLayer::setViewpointCenter(CCPoint position)
+{
+    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+
+    int x = MAX(position.x, winSize.width/2);
+    int y = MAX(position.y, winSize.height/2);
+    x = MIN(x, _tiledMap->getMapSize().width * _tiledMap->getTileSize().width - winSize.width / 2);
+    y = MIN(y, _tiledMap->getMapSize().height * _tiledMap->getTileSize().height - winSize.height / 2);
+    CCPoint actualPosition = ccp(x, y);
+
+    CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
+    CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
+    this->setPosition(viewPoint);
+
+    return;    
 }

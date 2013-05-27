@@ -43,7 +43,6 @@ bool SimpleDPad::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
     float distanceSQ = ccpDistanceSQ(location, this->getPosition());
     if (distanceSQ <= _radius * _radius)
     {
-        CCLOG("receive touch");
         this->updateDirectionForTouchLocation(location);
         _isHeld = true;
         return true;
