@@ -1,5 +1,7 @@
 #include "GameLayer.h"
 #include "SimpleAudioEngine.h"
+#include "Robot.h"
+#include "Defines.h"
 
 using namespace cocos2d;
 using namespace CocosDenshion;
@@ -30,6 +32,9 @@ bool GameLayer::init()
     /* 初始化hero */
     this->initHero();
 
+    /* 初始化robots */
+    this->initRobots();
+    
     /* 使能触摸 */
     this->setTouchEnabled(true);
 
@@ -69,6 +74,34 @@ void GameLayer::initHero()
     /* 执行空闲的动作 */
     _hero->idle();
 
+    return;
+}
+
+void GameLayer::initRobots()
+{
+    /* 创建50个robots */
+    int robotCount = 50;
+    _robots = CCArray::createWithCapacity(robotCount);
+    _robots->retain();
+
+    for (int i=0; i<robotCount; ++i)
+    {
+        Robot *robot = Robot::create();
+        _actors->addChild(robot);
+        _robots->addObject(robot);
+
+        /* 设置 位置随机 */
+        int minX = SCREEN.width + robot->getCenterToSides();
+        int maxX = _tiledMap->getMapSize().width *_tiledMap->getTileSize().width - robot->getCenterToSides();
+        int minY = robot->getCenterToBottom();
+        int maxY = 3*_tiledMap->getTileSize().height + robot->getCenterToBottom();
+
+        robot->setScaleX(-1);
+        robot->setPosition(ccp(RANDOM_RANGE(minX, maxX), RANDOM_RANGE(minY, maxY)));
+        robot->idle();        
+    }
+    
+    
     return;
 }
 

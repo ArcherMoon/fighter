@@ -21,6 +21,7 @@ public:
     CREATE_FUNC(GameLayer);
     
     void initHero();
+    void initRobots();
         
     void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
 
@@ -32,6 +33,7 @@ private:
     cocos2d::CCTMXTiledMap * _tiledMap;     /* 背景地图 */
     cocos2d::CCSpriteBatchNode * _actors;    /* 所有精灵 */
     Hero * _hero;                                         /* 精灵英雄 */
+    cocos2d::CCArray * _robots;                 /* 机器人数组 */
 };
 
 #endif
