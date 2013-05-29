@@ -132,12 +132,27 @@ void GameLayer::update(float delta)
     return;
 }
 
+void GameLayer::reorderActors(void)
+{
+    CCObject * pObject = NULL;
+    CCARRAY_FOREACH(_actors->getChildren(), pObject)
+    {
+        ActionSprite * sprite = (ActionSprite *)pObject;
+        _actors->reorderChild(sprite, _tiledMap->getMapSize().height * _tiledMap->getTileSize().height - sprite->getPosition().y);
+    }
+
+    return;
+}
+
 void GameLayer::updatePositions()
 {
     /* 设定移动范围 */
     float x = MIN(MAX(_hero->getCenterToSides(), _hero->getDesiredPosition().x), _tiledMap->getMapSize().width * _tiledMap->getTileSize().width - _hero->getCenterToSides());
     float y = MIN(MAX(_hero->getCenterToBottom(), _hero->getDesiredPosition().y), _tiledMap->getTileSize().height * 3 + _hero->getCenterToBottom());
     _hero->setPosition(ccp(x, y));
+
+    /* 对所有精灵的z轴重新排序，决定绘图顺序 */
+    this->reorderActors();
 
     return;
 }
