@@ -117,15 +117,16 @@ void  GameLayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent)
             Robot * robot = (Robot *)pObject;
             if (ActionStateKnockedOut == robot->getActionState())
             {
-                return;
+                continue;
             }
             /* 只有在同一水平线才进行碰撞检测(垂直相差10可以认为在同一水平线) */
             if (fabsf(_hero->getPosition().y - robot->getPosition().y) > 10)
             {
-                return;
+                continue;
             }      
             if (_hero->getAttackBox().actual.intersectsRect(robot->getHitBox().actual))
             {
+                CCLOG("hero hit ----");
                 robot->hurtWithDamage(_hero->getDamage());
             }
         }

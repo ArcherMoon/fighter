@@ -69,8 +69,29 @@ void ActionSprite::walkWithDirection(CCPoint direction)
      return;
 }
 
+void ActionSprite::knockout()
+{
+    this->stopAllActions();
+    this->runAction(knockedOutAction);
+    _hitPoints = 0;
+    _actionState = ActionStateKnockedOut;
+    return;
+}
+
 void ActionSprite::hurtWithDamage(float damage)
 {
+    if (ActionStateKnockedOut != _actionState)
+    {
+        this->stopAllActions();
+        this->runAction(hurtAction);
+        _actionState = ActionStateHurt;
+        _hitPoints -= damage;
+
+        if (_hitPoints <= 0 )
+        {
+            this->knockout();
+        }
+    }
     return;
 }
 
@@ -96,11 +117,16 @@ void ActionSprite::transformBoxes()
 {
     _hitBox.actual.origin = ccpAdd(this->getPosition(), _hitBox.original.origin);
     /* 目前只考虑翻转，不考虑缩放 */
+    float x;
     if (-1 == this->getScaleX())
     {
-        _attackBox.actual.origin.x -= (_hitBox.actual.size.width + _attackBox.actual.size.width);
+        x = _attackBox.original.origin.x - _hitBox.original.size.width - _attackBox.original.size.width;
     }
-    _attackBox.actual.origin = ccpAdd(this->getPosition(), _attackBox.original.origin);
+    else 
+    {
+        x = _attackBox.original.origin.x;
+    }
+    _attackBox.actual.origin = ccpAdd(this->getPosition(), ccp(x, _attackBox.original.origin.y));
     return;
 }
 

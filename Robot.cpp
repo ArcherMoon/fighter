@@ -28,7 +28,7 @@ bool Robot::init()
         idleAnimation->addSpriteFrame(frame);
     }
     idleAnimation->setDelayPerUnit(1.0/12.0);
-    idleAnimation->setRestoreOriginalFrame(true);
+    //idleAnimation->setRestoreOriginalFrame(true);
     idleAction = CCRepeatForever::create(CCAnimate::create(idleAnimation));
     /* 一定要加引用计数，否则会crash!! */
     idleAction->retain();
@@ -43,7 +43,7 @@ bool Robot::init()
         attackAnimation->addSpriteFrame(frame);
     }
     attackAnimation->setDelayPerUnit(1.0/24.0);
-    attackAnimation->setRestoreOriginalFrame(true);
+    //attackAnimation->setRestoreOriginalFrame(true);
     attackAction = CCSequence::create(
         CCAnimate::create(attackAnimation),
         CCCallFunc::create(this, callfunc_selector(Robot::idle)),
@@ -60,10 +60,46 @@ bool Robot::init()
         walkAnimation->addSpriteFrame(frame);
     }
     walkAnimation->setDelayPerUnit(1.0/12.0);
-    walkAnimation->setRestoreOriginalFrame(true);
+    //walkAnimation->setRestoreOriginalFrame(true);
     walkAction = CCRepeatForever::create(CCAnimate::create(walkAnimation));
     /* 一定要加引用计数，否则会crash!! */
     walkAction->retain();
+
+    /* 创建受伤的动作 */
+    CCAnimation *hurtAnimation = CCAnimation::create();
+    for (int i = 0; i<3; ++i)
+    {
+        char szName[128] = {0};
+        sprintf(szName, "robot_hurt_%02d.png", i);
+        CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(szName);
+        hurtAnimation->addSpriteFrame(frame);
+    }
+    hurtAnimation->setDelayPerUnit(1.0/12.0);
+    //hurtAnimation->setRestoreOriginalFrame(true);
+    hurtAction = CCSequence::create(
+        CCAnimate::create(hurtAnimation),
+        CCCallFunc::create(this, callfunc_selector(Robot::idle)),
+        NULL);
+    /* 一定要加引用计数，否则会crash!! */
+    hurtAction->retain();
+
+    /* 创建死亡的动作 */
+    CCAnimation *knockoutAnimation = CCAnimation::create();
+    for (int i = 0; i<5; ++i)
+    {
+        char szName[128] = {0};
+        sprintf(szName, "robot_knockout_%02d.png", i);
+        CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(szName);
+        knockoutAnimation->addSpriteFrame(frame);
+    }
+    knockoutAnimation->setDelayPerUnit(1.0/12.0);
+    //knockoutAnimation->setRestoreOriginalFrame(true);
+    knockedOutAction = CCSequence::create(
+        CCAnimate::create(knockoutAnimation),
+        CCBlink::create(2.0, 10),
+        NULL);
+    /* 一定要加引用计数，否则会crash!! */
+    knockedOutAction->retain();
 
     this->centerToSides = 29.0;
     this->centerToBottom = 39.0;

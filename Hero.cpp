@@ -28,7 +28,7 @@ bool Hero::init()
         idleAnimation->addSpriteFrame(frame);
     }
     idleAnimation->setDelayPerUnit(1.0/12.0);
-    idleAnimation->setRestoreOriginalFrame(true);
+    //idleAnimation->setRestoreOriginalFrame(true);
     idleAction = CCRepeatForever::create(CCAnimate::create(idleAnimation));
     /* 一定要加引用计数，否则会crash!! */
     idleAction->retain();
@@ -58,12 +58,46 @@ bool Hero::init()
         walkAnimation->addSpriteFrame(frame);
     }
     walkAnimation->setDelayPerUnit(1.0/12.0);
-    walkAnimation->setRestoreOriginalFrame(true);
+    //walkAnimation->setRestoreOriginalFrame(true);
     walkAction = CCRepeatForever::create(CCAnimate::create(walkAnimation));
     /* 一定要加引用计数，否则会crash!! */
     walkAction->retain();
 
-    CCLOG("---create actions-----idle %d,attack %d", idleAction->retainCount(), attackAction->retainCount());
+    /* 创建受伤的动作 */
+    CCAnimation *hurtAnimation = CCAnimation::create();
+    for (int i = 0; i<3; ++i)
+    {
+        char szName[128] = {0};
+        sprintf(szName, "hero_hurt_%02d.png", i);
+        CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(szName);
+        hurtAnimation->addSpriteFrame(frame);
+    }
+    hurtAnimation->setDelayPerUnit(1.0/12.0);
+    //hurtAnimation->setRestoreOriginalFrame(true);
+    hurtAction = CCSequence::create(
+        CCAnimate::create(hurtAnimation),
+        CCCallFunc::create(this, callfunc_selector(Hero::idle)),
+        NULL);
+    /* 一定要加引用计数，否则会crash!! */
+    hurtAction->retain();
+
+    /* 创建死亡的动作 */
+    CCAnimation *knockoutAnimation = CCAnimation::create();
+    for (int i = 0; i<5; ++i)
+    {
+        char szName[128] = {0};
+        sprintf(szName, "hero_knockout_%02d.png", i);
+        CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(szName);
+        knockoutAnimation->addSpriteFrame(frame);
+    }
+    knockoutAnimation->setDelayPerUnit(1.0/12.0);
+    //knockoutAnimation->setRestoreOriginalFrame(true);
+    knockedOutAction = CCSequence::create(
+        CCAnimate::create(knockoutAnimation),
+        CCBlink::create(2.0, 10),
+        NULL);
+    /* 一定要加引用计数，否则会crash!! */
+    knockedOutAction->retain();
 
     this->centerToSides = 29.0;
     this->centerToBottom = 39.0;

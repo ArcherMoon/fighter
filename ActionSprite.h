@@ -16,6 +16,8 @@ public:
     CC_SYNTHESIZE(cocos2d::CCAction *, idleAction, IdleAction);
     CC_SYNTHESIZE(cocos2d::CCAction *, attackAction, AttackAction);   
     CC_SYNTHESIZE(cocos2d::CCAction *, walkAction, WalkAction);   
+    CC_SYNTHESIZE(cocos2d::CCAction *, hurtAction, HurtAction);  
+    CC_SYNTHESIZE(cocos2d::CCAction *, knockedOutAction, KnockedOutAction);  
     
 
     /* action methods */
@@ -23,6 +25,7 @@ public:
     void attack();
     void walkWithDirection(cocos2d::CCPoint direction);
     void hurtWithDamage(float damage);
+    void knockout();
 
     /* ÈËÎï×´Ì¬ */
     CC_SYNTHESIZE(ActionState,_actionState, ActionState);
