@@ -44,6 +44,11 @@ public:
     /* 用于进行碰撞检测 */
     CC_SYNTHESIZE(BoundingBox, _attackBox, AttackBox);
     CC_SYNTHESIZE(BoundingBox, _hitBox, HitBox);
+    /* 创建碰撞盒子 */
+    BoundingBox createBoundingBoxWithOrigin(cocos2d::CCPoint origin, cocos2d::CCSize size);
+    /* 根据精灵的位置和缩放决定包围盒的原点和大小 */
+    void transformBoxes();
+    void setPosition(cocos2d::CCPoint position);    /* 自己实现的，不是对ccnode的重写 */
 
 private:
 

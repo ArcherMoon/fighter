@@ -19,8 +19,8 @@ typedef enum _ActionState
 
 typedef struct _boundingBox
 {
-    cocos2d::CCRect actual;
-    cocos2d::CCRect original;
+    cocos2d::CCRect actual;     /* 绝对位置 */
+    cocos2d::CCRect original;   /* 相对于精灵位置 */
 }BoundingBox;
 
 #endif

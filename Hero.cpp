@@ -65,12 +65,17 @@ bool Hero::init()
 
     CCLOG("---create actions-----idle %d,attack %d", idleAction->retainCount(), attackAction->retainCount());
 
-     this->centerToSides = 29.0;
-     this->centerToBottom = 39.0;
-     this->_walkSpeed = 80.0;
-     this->_hitPoints = 100.0f;
-     this->_damage = 20.0f;
+    this->centerToSides = 29.0;
+    this->centerToBottom = 39.0;
+    this->_walkSpeed = 80.0;
+    this->_hitPoints = 100.0f;
+    this->_damage = 20.0f;
 
+    float toSides = this->getCenterToSides();
+    float toBottom = this->getCenterToBottom();
+    this->setAttackBox(createBoundingBoxWithOrigin(ccp(toSides, -10), CCSize(20, 20)));
+    this->setHitBox(createBoundingBoxWithOrigin(ccp(-toSides, -toBottom), CCSize(2*toSides, 2* toBottom)));
+    
     return true;
 }
 

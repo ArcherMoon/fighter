@@ -80,3 +80,35 @@ void ActionSprite::update(float delta)
 
     return;
 }
+
+BoundingBox ActionSprite::createBoundingBoxWithOrigin(CCPoint origin, CCSize size)
+{
+    BoundingBox boundingBox;
+    boundingBox.original.origin = origin;
+    boundingBox.original.size = size;
+    boundingBox.actual.origin = ccpAdd(this->getPosition(), origin);
+    boundingBox.actual.size = size;
+    
+    return boundingBox;
+}
+
+void ActionSprite::transformBoxes()
+{
+    _hitBox.actual.origin = ccpAdd(this->getPosition(), _hitBox.original.origin);
+    /* 目前只考虑翻转，不考虑缩放 */
+    if (-1 == this->getScaleX())
+    {
+        _attackBox.actual.origin.x -= (_hitBox.actual.size.width + _attackBox.actual.size.width);
+    }
+    _attackBox.actual.origin = ccpAdd(this->getPosition(), _attackBox.original.origin);
+    return;
+}
+
+void ActionSprite::setPosition(CCPoint position)
+{
+    CCNode::setPosition(position);
+    /* 更新碰撞盒位置 */
+    this->transformBoxes();
+
+    return;
+}
