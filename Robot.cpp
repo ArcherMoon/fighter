@@ -65,9 +65,11 @@ bool Robot::init()
     /* 一定要加引用计数，否则会crash!! */
     walkAction->retain();
 
-     this->centerToSides = 29.0;
-     this->centerToBottom = 39.0;
-     this->_walkSpeed = 80.0;
+    this->centerToSides = 29.0;
+    this->centerToBottom = 39.0;
+    this->_walkSpeed = 80.0;
+    this->_hitPoints = 100.0f;
+    this->_damage = 10.0f;
 
     return true;
 }

@@ -69,6 +69,11 @@ void ActionSprite::walkWithDirection(CCPoint direction)
      return;
 }
 
+void ActionSprite::hurtWithDamage(float damage)
+{
+    return;
+}
+
 void ActionSprite::update(float delta)
 {
     _desiredPosition = ccpAdd(this->getPosition(), ccpMult(_velocity, delta));

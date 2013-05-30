@@ -108,6 +108,28 @@ void GameLayer::initRobots()
 void  GameLayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent)
 {
     _hero->attack();
+    if (ActionStateAttack == _hero->getActionState())
+    {
+        /* 遍历所有机器人进行碰撞检测 */
+        CCObject * pObject = NULL;
+        CCARRAY_FOREACH(_robots, pObject)
+        {
+            Robot * robot = (Robot *)pObject;
+            if (ActionStateKnockedOut == robot->getActionState())
+            {
+                return;
+            }
+            /* 只有在同一水平线才进行碰撞检测(垂直相差10可以认为在同一水平线) */
+            if (fabsf(_hero->getPosition().y - robot->getPosition().y) > 10)
+            {
+                return;
+            }      
+            if (_hero->getAttackBox().actual.intersectsRect(robot->getHitBox().actual))
+            {
+                robot->hurtWithDamage(_hero->getDamage());
+            }
+        }
+    }
     return;
 }
 

@@ -68,6 +68,8 @@ bool Hero::init()
      this->centerToSides = 29.0;
      this->centerToBottom = 39.0;
      this->_walkSpeed = 80.0;
+     this->_hitPoints = 100.0f;
+     this->_damage = 20.0f;
 
     return true;
 }
