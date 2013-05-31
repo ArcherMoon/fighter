@@ -70,6 +70,7 @@ void GameLayer::initHero()
 
     /* 设置hero的位置 */
     _hero->setPosition(ccp(_hero->getCenterToSides(), 80));
+    _hero->setDesiredPosition(_hero->getPosition());
 
     /* 执行空闲的动作 */
     _hero->idle();
@@ -98,6 +99,7 @@ void GameLayer::initRobots()
 
         robot->setScaleX(-1);
         robot->setPosition(ccp(RANDOM_RANGE(minX, maxX), RANDOM_RANGE(minY, maxY)));
+        robot->setDesiredPosition(robot->getPosition());
         robot->idle();        
     }
     
@@ -146,9 +148,91 @@ void GameLayer::simpleDPadTouchEnded()
     _hero->idle();    
 }
 
+void GameLayer::updateRobots(float delta)
+{
+    int randomChoice = 0;
+    /* 遍历所有robots */
+    CCObject * pObject = NULL;
+    Robot * robot = NULL;
+    CCARRAY_FOREACH(_robots, pObject)
+    {
+        robot = (Robot *)pObject;
+        /* 更新robot的位置 */
+        robot->update(delta);
+        if (ActionStateKnockedOut == robot->getActionState())
+        {
+            continue;
+        }
+        if (CURTIME < robot->getNextDecisionTime())
+        {
+            /* 没到决策时间，换下一个robot */
+            continue;
+        }
+        CCLOG("robot ai----%ld.", CURTIME);
+        /* 超过决策时间才进行决策 */
+       float distanceSQ = ccpDistanceSQ(_hero->getPosition(), robot->getPosition());
+        /* robot与hero的距离小于50，attack或idle */
+        if (distanceSQ <= 50*50)
+        {
+            robot->setNextDecisionTime(CURTIME + FRANDOM_RANGE(0.1, 0.5)*1000);
+            randomChoice = RANDOM_RANGE(0,  1);
+            if (0 == randomChoice)
+            {
+                /* attack */
+                if (_hero->getPosition().x > robot->getPosition().x)
+                {
+                    robot->setScaleX(1.0);
+                }
+                else
+                {
+                    robot->setScaleX(-1.0);
+                }
+                
+                robot->attack();
+                if (ActionStateAttack == robot->getActionState())
+                {
+                    if (fabsf(_hero->getPosition().y - robot->getPosition().y) > 10)
+                    {
+                        return;
+                    }      
+                    if (robot->getAttackBox().actual.intersectsRect(_hero->getHitBox().actual))
+                    {
+                        _hero->hurtWithDamage(robot->getDamage());
+                    }
+                }
+    
+            }
+            else
+            {
+                /* idle */
+               robot->idle();
+            }
+        }
+        else if (distanceSQ <= SCREEN.width * SCREEN.width)
+        {
+            robot->setNextDecisionTime(CURTIME + FRANDOM_RANGE(0.5, 1.0)*1000);
+            randomChoice = RANDOM_RANGE(0,  2);
+            if (0 == randomChoice)
+            {
+                /* walk */
+                CCPoint moveDirection = ccpNormalize(ccpSub(_hero->getPosition(), robot->getPosition()));
+                robot->walkWithDirection(moveDirection);
+            }
+            else
+            {
+                /* idle */
+                robot->idle();
+            }            
+        }
+    }
+
+    return;
+}
+
 void GameLayer::update(float delta)
 {
     _hero->update(delta);
+    this->updateRobots(delta);
     this->updatePositions();
     this->setViewpointCenter(_hero->getPosition());
 
@@ -169,10 +253,26 @@ void GameLayer::reorderActors(void)
 
 void GameLayer::updatePositions()
 {
-    /* 设定移动范围 */
+    /* 设定hero移动范围 */
     float x = MIN(MAX(_hero->getCenterToSides(), _hero->getDesiredPosition().x), _tiledMap->getMapSize().width * _tiledMap->getTileSize().width - _hero->getCenterToSides());
     float y = MIN(MAX(_hero->getCenterToBottom(), _hero->getDesiredPosition().y), _tiledMap->getTileSize().height * 3 + _hero->getCenterToBottom());
     _hero->setPosition(ccp(x, y));
+
+    /* 设定robot移动范围 */
+
+    CCObject *pObject = NULL;
+    Robot *robot = NULL;
+    CCARRAY_FOREACH(_robots, pObject)
+    {
+        robot = (Robot *)pObject;
+        if (ActionStateKnockedOut == robot->getActionState())
+        {
+            continue;
+        }
+        x = MIN(MAX(robot->getCenterToSides(), robot->getDesiredPosition().x), _tiledMap->getMapSize().width * _tiledMap->getTileSize().width - robot->getCenterToSides());
+        y = MIN(MAX(robot->getCenterToBottom(), robot->getDesiredPosition().y), _tiledMap->getTileSize().height * 3 + robot->getCenterToBottom());
+        robot->setPosition(ccp(x, y));
+    }
 
     /* 对所有精灵的z轴重新排序，决定绘图顺序 */
     this->reorderActors();

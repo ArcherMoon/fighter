@@ -111,6 +111,8 @@ bool Robot::init()
     float toBottom = this->getCenterToBottom();
     this->setAttackBox(createBoundingBoxWithOrigin(ccp(toSides, -5), CCSize(25, 20)));
     this->setHitBox(createBoundingBoxWithOrigin(ccp(-toSides, -toBottom), CCSize(2*toSides, 2* toBottom)));
+    
+    _nextDecisionTime = 0;
 
     return true;
 }

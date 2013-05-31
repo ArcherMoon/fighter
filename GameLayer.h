@@ -13,6 +13,7 @@ public:
     
     virtual bool init();  
     void initTiledMap();
+    void updateRobots(float delta);
     virtual void update(float delta);
     void updatePositions();
     /* 使hero始终位于屏幕中心 */

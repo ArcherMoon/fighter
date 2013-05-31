@@ -12,6 +12,8 @@ public:
     virtual bool init();
 
     CREATE_FUNC(Robot);
+    /* 下一次决策时间 */
+    CC_SYNTHESIZE(float, _nextDecisionTime, NextDecisionTime);
 
 private:
 
