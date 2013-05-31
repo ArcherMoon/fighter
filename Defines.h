@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 
 #define SCREEN CCDirector::sharedDirector()->getWinSize()
+#define CENTER ccp(SCREEN.width/2, SCREEN.height/2) 
 #define CURTIME getCurMillSecond()
 
 #ifndef UINT64_C

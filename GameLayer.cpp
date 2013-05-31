@@ -2,6 +2,7 @@
 #include "SimpleAudioEngine.h"
 #include "Robot.h"
 #include "Defines.h"
+#include "GameScene.h"
 
 using namespace cocos2d;
 using namespace CocosDenshion;
@@ -151,6 +152,8 @@ void GameLayer::simpleDPadTouchEnded()
 void GameLayer::updateRobots(float delta)
 {
     int randomChoice = 0;
+    /* robot存活计数 */
+    int alive = 0;
     /* 遍历所有robots */
     CCObject * pObject = NULL;
     Robot * robot = NULL;
@@ -163,6 +166,7 @@ void GameLayer::updateRobots(float delta)
         {
             continue;
         }
+        alive++;
         if (CURTIME < robot->getNextDecisionTime())
         {
             /* 没到决策时间，换下一个robot */
@@ -198,6 +202,11 @@ void GameLayer::updateRobots(float delta)
                     if (robot->getAttackBox().actual.intersectsRect(_hero->getHitBox().actual))
                     {
                         _hero->hurtWithDamage(robot->getDamage());
+                        /* hero死亡则游戏结束,已经创建结束菜单则不再进入 */
+                        if ((ActionStateKnockedOut == _hero->getActionState()) && (NULL == _hud->getChildByTag(5)) )
+                        {
+                            this->endGame();
+                        }
                     }
                 }
     
@@ -225,7 +234,35 @@ void GameLayer::updateRobots(float delta)
             }            
         }
     }
+    /* robot全灭则游戏结束，已经创建结束菜单则不再进入 */
+    if (0 == alive &&  (NULL == _hud->getChildByTag(5)))
+    {
+        this->endGame();
+    }
+    
+    return;
+}
 
+void GameLayer::endGame()
+{
+    /* 创建restart标签 */
+    /* 创建标签 */
+    CCLabelTTF *restartLabel = CCLabelTTF::create("RESTART", "Arial", 30);
+    /* 创建菜单项 */
+    CCMenuItemLabel *restartItem = CCMenuItemLabel::create(restartLabel, this, menu_selector(GameLayer::restartGame));
+    /* 创建菜单 */
+    CCMenu *menu = CCMenu::create(restartItem, NULL);
+    menu->setPosition(CENTER);
+    /* 设置tag，方便查找 */
+    menu->setTag(5);
+    _hud->addChild(menu, 5);
+    
+    return;
+}
+
+void GameLayer::restartGame()
+{
+    CCDirector::sharedDirector()->replaceScene(GameScene::create());
     return;
 }
 

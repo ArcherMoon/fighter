@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Hero.h"
 #include "SimpleDPad.h"
+#include "HudLayer.h"
 
 class GameLayer : public cocos2d::CCLayer, public SimpleDPadDelegate
 {
@@ -14,6 +15,8 @@ public:
     virtual bool init();  
     void initTiledMap();
     void updateRobots(float delta);
+    void endGame();
+    void restartGame();
     virtual void update(float delta);
     void updatePositions();
     /* 使hero始终位于屏幕中心 */
@@ -30,6 +33,8 @@ public:
     /* 实现代理SimpleDPadDelegate中的方法 */
     void didChangeDirectionTo(cocos2d::CCPoint direction);
     void simpleDPadTouchEnded();
+
+    CC_SYNTHESIZE(HudLayer *, _hud, Hud);
     
 private:
     cocos2d::CCTMXTiledMap * _tiledMap;     /* 背景地图 */
