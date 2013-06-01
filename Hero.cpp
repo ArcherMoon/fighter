@@ -30,9 +30,7 @@ bool Hero::init()
     }
     idleAnimation->setDelayPerUnit(1.0/12.0);
     //idleAnimation->setRestoreOriginalFrame(true);
-    idleAction = CCRepeatForever::create(CCAnimate::create(idleAnimation));
-    /* 一定要加引用计数，否则会crash!! */
-    idleAction->retain();
+    this->setIdleAction(CCRepeatForever::create(CCAnimate::create(idleAnimation)));
     
      /* 创建攻击动作 */
      CCArray * attackFrames = CCArray::createWithCapacity(3);
@@ -42,12 +40,10 @@ bool Hero::init()
         attackFrames->addObject(frame);
     }
     CCAnimation *attackAnimation = CCAnimation::createWithSpriteFrames(attackFrames, 1.0/24.0);
-    attackAction = CCSequence::create(
-        CCAnimate::create(attackAnimation),
-        CCCallFunc::create(this, callfunc_selector(Hero::idle)),
-        NULL);
-    /* 一定要加引用计数，否则会crash!! */
-    attackAction->retain();
+    this->setAttackAction(CCSequence::create(
+                                    CCAnimate::create(attackAnimation),
+                                    CCCallFunc::create(this, callfunc_selector(Hero::idle)),
+                                     NULL));
 
     /* 创建移动的动作 */
     CCAnimation *walkAnimation = CCAnimation::create();
@@ -60,9 +56,7 @@ bool Hero::init()
     }
     walkAnimation->setDelayPerUnit(1.0/12.0);
     //walkAnimation->setRestoreOriginalFrame(true);
-    walkAction = CCRepeatForever::create(CCAnimate::create(walkAnimation));
-    /* 一定要加引用计数，否则会crash!! */
-    walkAction->retain();
+    this->setWalkAction(CCRepeatForever::create(CCAnimate::create(walkAnimation)));
 
     /* 创建受伤的动作 */
     CCAnimation *hurtAnimation = CCAnimation::create();
@@ -75,12 +69,10 @@ bool Hero::init()
     }
     hurtAnimation->setDelayPerUnit(1.0/12.0);
     //hurtAnimation->setRestoreOriginalFrame(true);
-    hurtAction = CCSequence::create(
-        CCAnimate::create(hurtAnimation),
-        CCCallFunc::create(this, callfunc_selector(Hero::idle)),
-        NULL);
-    /* 一定要加引用计数，否则会crash!! */
-    hurtAction->retain();
+    this->setHurtAction(CCSequence::create(
+                                    CCAnimate::create(hurtAnimation),
+                                    CCCallFunc::create(this, callfunc_selector(Hero::idle)),
+                                    NULL));
 
     /* 创建死亡的动作 */
     CCAnimation *knockoutAnimation = CCAnimation::create();
@@ -93,12 +85,10 @@ bool Hero::init()
     }
     knockoutAnimation->setDelayPerUnit(1.0/12.0);
     //knockoutAnimation->setRestoreOriginalFrame(true);
-    knockedOutAction = CCSequence::create(
-        CCAnimate::create(knockoutAnimation),
-        CCBlink::create(2.0, 10),
-        NULL);
-    /* 一定要加引用计数，否则会crash!! */
-    knockedOutAction->retain();
+    this->setKnockedOutAction(CCSequence::create(
+                                                CCAnimate::create(knockoutAnimation),
+                                                CCBlink::create(2.0, 10),
+                                                NULL));
 
     this->centerToSides = 29.0;
     this->centerToBottom = 39.0;

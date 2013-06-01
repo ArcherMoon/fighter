@@ -13,11 +13,11 @@ public:
     virtual void update(float delta);
     
     /* actions */
-    CC_SYNTHESIZE(cocos2d::CCAction *, idleAction, IdleAction);
-    CC_SYNTHESIZE(cocos2d::CCAction *, attackAction, AttackAction);   
-    CC_SYNTHESIZE(cocos2d::CCAction *, walkAction, WalkAction);   
-    CC_SYNTHESIZE(cocos2d::CCAction *, hurtAction, HurtAction);  
-    CC_SYNTHESIZE(cocos2d::CCAction *, knockedOutAction, KnockedOutAction);  
+    CC_SYNTHESIZE_RETAIN(cocos2d::CCAction *, idleAction, IdleAction);
+    CC_SYNTHESIZE_RETAIN(cocos2d::CCAction *, attackAction, AttackAction);   
+    CC_SYNTHESIZE_RETAIN(cocos2d::CCAction *, walkAction, WalkAction);   
+    CC_SYNTHESIZE_RETAIN(cocos2d::CCAction *, hurtAction, HurtAction);  
+    CC_SYNTHESIZE_RETAIN(cocos2d::CCAction *, knockedOutAction, KnockedOutAction);  
     
 
     /* action methods */

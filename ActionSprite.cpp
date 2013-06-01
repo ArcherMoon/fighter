@@ -7,12 +7,19 @@ ActionSprite::ActionSprite()
 :idleAction(NULL)
 ,attackAction(NULL)
 ,walkAction(NULL)
+,hurtAction(NULL)
+,knockedOutAction(NULL)
 ,_actionState(ActionStateNone)
 {
 }
 
 ActionSprite::~ActionSprite()
 {
+    CC_SAFE_RELEASE_NULL(idleAction);
+    CC_SAFE_RELEASE_NULL(attackAction);
+    CC_SAFE_RELEASE_NULL(walkAction);
+    CC_SAFE_RELEASE_NULL(hurtAction);
+    CC_SAFE_RELEASE_NULL(knockedOutAction);
 }
 
 void ActionSprite::idle()
