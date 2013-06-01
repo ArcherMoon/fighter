@@ -1,5 +1,5 @@
 #include "ActionSprite.h"
-
+#include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
 
@@ -86,6 +86,12 @@ void ActionSprite::hurtWithDamage(float damage)
         this->runAction(hurtAction);
         _actionState = ActionStateHurt;
         _hitPoints -= damage;
+
+        /* ²¥·ÅÊÜÉËÒôÐ§ */
+        int randdomSound = RANDOM_RANGE(0, 1);
+        char szFilePath[128] = {0};
+        sprintf(szFilePath, "pd_hit%d.wav", randdomSound);
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(szFilePath);
 
         if (_hitPoints <= 0 )
         {

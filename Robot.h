@@ -10,6 +10,7 @@ public:
 	Robot(void);
 	~Robot(void);
     virtual bool init();
+    void knockout();
 
     CREATE_FUNC(Robot);
     /* 下一次决策时间 */

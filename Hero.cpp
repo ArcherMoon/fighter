@@ -1,4 +1,5 @@
 #include "Hero.h"
+#include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
 
@@ -113,4 +114,9 @@ bool Hero::init()
     return true;
 }
 
-
+void Hero::knockout()
+{
+    ActionSprite::knockout();
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("pd_herodeath.wav");
+    return;
+}

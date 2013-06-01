@@ -10,6 +10,7 @@ public:
 	Hero(void);
 	~Hero(void);
     virtual bool init();
+    void knockout();
 
     CREATE_FUNC(Hero);
 

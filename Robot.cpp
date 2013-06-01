@@ -1,4 +1,5 @@
 #include "Robot.h"
+#include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
 
@@ -117,4 +118,9 @@ bool Robot::init()
     return true;
 }
 
-
+void Robot::knockout()
+{
+    ActionSprite::knockout();
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("pd_botdeath.wav");
+    return;
+}

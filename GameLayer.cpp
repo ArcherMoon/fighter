@@ -21,6 +21,13 @@ bool GameLayer::init()
     {
         return false;
     }
+    /* 加载音乐音效 */
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("latin_industries.aifc");
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("latin_industries.aifc", true);
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("pd_hit0.wav");
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("pd_hit1.wav");
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("pd_herodeath.wav");
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("pd_botdeath.wav"); 
 
     /* 加载背景图 */
     initTiledMap();
@@ -246,7 +253,6 @@ void GameLayer::updateRobots(float delta)
 void GameLayer::endGame()
 {
     /* 创建restart标签 */
-    /* 创建标签 */
     CCLabelTTF *restartLabel = CCLabelTTF::create("RESTART", "Arial", 30);
     /* 创建菜单项 */
     CCMenuItemLabel *restartItem = CCMenuItemLabel::create(restartLabel, this, menu_selector(GameLayer::restartGame));

@@ -25,7 +25,7 @@ public:
     void attack();
     void walkWithDirection(cocos2d::CCPoint direction);
     void hurtWithDamage(float damage);
-    void knockout();
+    virtual void knockout();
 
     /* ÈËÎï×´Ì¬ */
     CC_SYNTHESIZE(ActionState,_actionState, ActionState);
