@@ -24,10 +24,10 @@ bool GameLayer::init()
     /* º”‘ÿ“Ù¿÷“Ù–ß */
     CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("latin_industries.aifc");
     CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("latin_industries.aifc", true);
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("pd_hit0.wav");
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("pd_hit1.wav");
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("pd_herodeath.wav");
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("pd_botdeath.wav"); 
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("pd_hit0.wav");
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("pd_hit1.wav");
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("pd_herodeath.wav");
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("pd_botdeath.wav"); 
 
     /* º”‘ÿ±≥æ∞Õº */
     initTiledMap();
